@@ -12,11 +12,12 @@ const {
   logout,
 } = require("../controllers/users.controller");
 
+
 route.route("/users").post(createUser);
 
 route
   .route("/users/:id")
-  .put(updateUser)
+  .put(auth, updateUser)
   .delete(deleteUser)
   .get(getIsUserActive);
 
@@ -24,4 +25,5 @@ route.route("/users/:id/active").patch(activeUser);
 
 route.route("/authorization").post(login).delete(logout);
 
+route.route("/messages/send").post()
 module.exports = route;

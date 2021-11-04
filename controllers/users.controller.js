@@ -108,3 +108,6 @@ exports.logout = (req, res, next) => {
     status: 200,
   });
 };
+exports.sendMessage = (req, res, next) =>{
+
+}
