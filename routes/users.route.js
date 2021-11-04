@@ -6,7 +6,7 @@ const {
   updateUser,
   deleteUser,
   activeUser,
-  isUserActive,
+  getIsUserActive,
 } = require("../controllers/users.controller");
 
 route.route("/")
@@ -15,7 +15,7 @@ route.route("/")
 route.route("/:id")
     .put(updateUser)
     .delete(deleteUser)
-    .get(isUserActive);
+    .get(getIsUserActive);
 
 route.route("/:id/active")
     .patch(activeUser);

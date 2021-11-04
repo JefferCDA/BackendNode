@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const morgan = require("morgan");
 const connectDatabase = require("./config/db");
+const errorHandler = require('./middleware/error');
 const jwt = require("jsonwebtoken");
 const mqtt = require("mqtt");
 const serverMqtt = mqtt.connect("mqtt://test.mosquitto.org");
@@ -10,13 +11,17 @@ dotenv.config({ path: "./config/config.env" });
 connectDatabase();
 
 const user = require("./routes/users.route");
+
 const app = express();
+app.use(express.json());
 
 if (process.env.NODE_env === "development") {
   app.use(morgan("dev"));
 }
 
 app.use("/api/users", user);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT | 5000;
 
