@@ -1,14 +1,24 @@
 const User = require("../models/Users.model");
 const errorResponse = require("../helper/errorResponse");
+
 exports.createUser = async (req, res, next) => {
   try {
-    const userData = await User.create(req.body);
+    const { name, lastName, email, password } = req.body;
+    const userData = await User.create({
+      name,
+      lastName,
+      email,
+      password,
+    });
+
     res.status(200).json({
       status: 200,
       userId: userData._id,
     });
   } catch (err) {
-    next(err);
+    next(
+      new errorResponse("it wasn't possible to process request: " + err, 400)
+    );
   }
 };
 exports.updateUser = async (req, res, next) => {
@@ -65,4 +75,36 @@ exports.getIsUserActive = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return next(new errorResponse("Email and password required"));
+    }
+    const userData = await User.findOne({ email }).select("+password");
+    if (!userData) {
+      return next(new errorResponse("User email don't exist", 400));
+    }
+
+    const validUser = await userData.validateLogin(password);
+    if (!validUser) {
+      return next(new errorResponse("Incorrect password", 400));
+    } else {
+      const token = userData.createJWT();
+      res.status(200).json({
+        status: 200,
+        userId: userData._id,
+        token,
+      });
+    }
+  } catch (err) {
+    next(new errorResponse("Login error :" + err, 400));
+  }
+};
+exports.logout = (req, res, next) => {
+  res.status(200).json({
+    status: 200,
+  });
 };

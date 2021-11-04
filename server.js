@@ -3,7 +3,6 @@ const express = require("express");
 const morgan = require("morgan");
 const connectDatabase = require("./config/db");
 const errorHandler = require('./middleware/error');
-const jwt = require("jsonwebtoken");
 const mqtt = require("mqtt");
 const serverMqtt = mqtt.connect("mqtt://test.mosquitto.org");
 
@@ -19,7 +18,7 @@ if (process.env.NODE_env === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/users", user);
+app.use("/api", user);
 
 app.use(errorHandler);
 
