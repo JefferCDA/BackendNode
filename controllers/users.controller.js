@@ -1,5 +1,9 @@
 const User = require("../models/Users.model");
 const errorResponse = require("../helper/errorResponse");
+var redis = require('');
+var JWTR =  require('jwt-redis').default;
+var redisClient = redis.createClient();
+var jwtr = new JWTR(redisClient);
 
 exports.createUser = async (req, res, next) => {
   try {
