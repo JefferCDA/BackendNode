@@ -3,8 +3,6 @@ const express = require("express");
 const morgan = require("morgan");
 const connectDatabase = require("./config/db");
 const errorHandler = require('./middleware/error');
-const mqtt = require("mqtt");
-const serverMqtt = mqtt.connect("mqtt://test.mosquitto.org");
 
 dotenv.config({ path: "./config/config.env" });
 connectDatabase();

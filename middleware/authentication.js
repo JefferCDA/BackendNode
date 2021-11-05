@@ -4,7 +4,7 @@ const User = require("../models/Users.model");
 
 exports.authentication = async (req, res, next) => {
   let token;
-  if (req.headers.authorization && req.authorization.startsWith("Bearer")) {
+  if (req.headers.authorization) {
     token = req.headers.authorization.split(" ")[1];
   }
   if (!token) {
@@ -19,3 +19,4 @@ exports.authentication = async (req, res, next) => {
     return next(new ErrorResponse("token errors" + err, 400));
   }
 };
+

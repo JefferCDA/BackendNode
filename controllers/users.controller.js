@@ -104,10 +104,16 @@ exports.login = async (req, res, next) => {
   }
 };
 exports.logout = (req, res, next) => {
-  res.status(200).json({
-    status: 200,
-  });
-};
-exports.sendMessage = (req, res, next) =>{
+  try {
+    let token = req.headers.authorization.split(" ")[1];
+    jwtr.destroy(token);
 
-}
+    res.status(200).json({
+      status: 200,
+      message: "Logout "
+    });
+    next();
+  } catch (err) {
+    return next(new errorResponse("token errors" + err, 400));
+  }
+};
